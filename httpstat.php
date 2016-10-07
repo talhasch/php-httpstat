@@ -20,11 +20,11 @@ class Env
 
     public function get($default = null)
     {
-        if (!isset($_ENV[$this->key]) || strlen($_ENV[$this->key]) == 0) {
+        if (strlen(getenv($this->key)) === 0) {
             return $default;
         }
 
-        return $_ENV[$this->key];
+        return getenv($this->key);
     }
 }
 
