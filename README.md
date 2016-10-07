@@ -10,7 +10,7 @@ Clone repo, copy httpstat.php to one of your $PATH directories and make executab
 $ git clone https://github.com/talhasch/php-httpstat
 $ cd php-httpstat
 $ cp httpstat.php /usr/local/bin/httpstat
-$ chmod +x httpstat.php
+$ chmod +x /usr/local/bin/httpstat
 ```
 
 Run
