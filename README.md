@@ -23,3 +23,5 @@ Run
 ```
 httpstat http://www.google.com
 ```
+
+<img src="https://github.com/talhasch/php-httpstat/blob/master/screenshot.png" width="100%">
