@@ -248,8 +248,8 @@ function main()
     $cmdArr = array(
         $curlBin,
         '-w', "'{$curlFormat}'",
-        '-D', "'{$headerFName}'",
-        '-o', "'{$bodyFName}'",
+        '-D', "\"{$headerFName}\"",
+        '-o', "\"{$bodyFName}\"",
         '-s', '-S'
     );
 
