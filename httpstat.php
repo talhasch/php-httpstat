@@ -68,8 +68,7 @@ $httpTemplate = "  DNS Lookup   TCP Connection   Server Processing   Content Tra
 ";
 
 
-$ISATTY = posix_isatty(STDOUT);
-
+$ISATTY = function_exists('posix_isatty') ? posix_isatty(STDOUT) : false;
 
 function makeColor($code)
 {
@@ -141,7 +140,7 @@ Options:
                 which are already used internally.
   -h --help     show this screen.
   --version     show version.
-  
+
 Environments:
   HTTPSTAT_SHOW_BODY    Set to `true` to show resposne body in the output,
                         note that body length is limited to 1023 bytes, will be
