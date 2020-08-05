@@ -68,7 +68,7 @@ $httpTemplate = "  DNS Lookup   TCP Connection   Server Processing   Content Tra
 ";
 
 
-$ISATTY = function_exists('posix_isatty') ? posix_isatty(STDOUT) : false;
+$ISATTY = function_exists('posix_isatty') ? posix_isatty(STDOUT) : true;
 
 function makeColor($code)
 {
