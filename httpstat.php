@@ -36,15 +36,15 @@ $ENV_DEBUG = new Env('{prefix}_DEBUG');
 
 
 $curlFormat = '{' .
-    '"time_namelookup": %{time_namelookup},' .
-    '"time_connect": %{time_connect},' .
-    '"time_appconnect": %{time_appconnect},' .
-    '"time_pretransfer": %{time_pretransfer},' .
-    '"time_redirect": %{time_redirect},' .
-    '"time_starttransfer": %{time_starttransfer},' .
-    '"time_total": %{time_total},' .
-    '"speed_download": %{speed_download},' .
-    '"speed_upload": %{speed_upload}' .
+    '\"time_namelookup\": %{time_namelookup},' .
+    '\"time_connect\": %{time_connect},' .
+    '\"time_appconnect\": %{time_appconnect},' .
+    '\"time_pretransfer\": %{time_pretransfer},' .
+    '\"time_redirect\": %{time_redirect},' .
+    '\"time_starttransfer\": %{time_starttransfer},' .
+    '\"time_total\": %{time_total},' .
+    '\"speed_download\": %{speed_download},' .
+    '\"speed_upload\": %{speed_upload}' .
     '}';
 
 
@@ -247,7 +247,7 @@ function main()
 
     $cmdArr = array(
         $curlBin,
-        '-w', "'{$curlFormat}'",
+        '-w', "\"{$curlFormat}\"",
         '-D', "\"{$headerFName}\"",
         '-o', "\"{$bodyFName}\"",
         '-s', '-S'
@@ -262,13 +262,16 @@ function main()
 
     $p = proc_open($cmd,
         array(
-            array("pipe", "r"),
-            array("pipe", "w"),
-            array("pipe", "w")
+            0 => array("pipe", "r"),
+            1 => array("pipe", "w"),
+            2 => array("pipe", "w")
         ),
         $pipes,
         sys_get_temp_dir(),
-        $cmdEnv);
+        null,//$cmdEnv,
+        [
+            //'bypass_shell' => true,
+    ]);
 
     $out = stream_get_contents($pipes[1]);
     $err = stream_get_contents($pipes[2]);
