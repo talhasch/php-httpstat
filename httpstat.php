@@ -236,8 +236,14 @@ function main()
     fclose($headerF);
 
     // run cmd
-    $cmdEnv = $_ENV;
-    $cmdEnv['LC_ALL'] = 'C';
+    if (strcasecmp(substr(PHP_OS, 0, 3), 'WIN') != 0) {
+        // unix like systems
+        $cmdEnv = $_ENV;
+        $cmdEnv['LC_ALL'] = 'C';
+    }
+    else
+        // windows
+        $cmdEnv = null;
 
     $cmdArr = array(
         $curlBin,
