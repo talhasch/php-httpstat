@@ -36,15 +36,15 @@ $ENV_DEBUG = new Env('{prefix}_DEBUG');
 
 
 $curlFormat = '{' .
-    '\"time_namelookup\": %{time_namelookup},' .
-    '\"time_connect\": %{time_connect},' .
-    '\"time_appconnect\": %{time_appconnect},' .
-    '\"time_pretransfer\": %{time_pretransfer},' .
-    '\"time_redirect\": %{time_redirect},' .
-    '\"time_starttransfer\": %{time_starttransfer},' .
-    '\"time_total\": %{time_total},' .
-    '\"speed_download\": %{speed_download},' .
-    '\"speed_upload\": %{speed_upload}' .
+    '"time_namelookup": %{time_namelookup},' .
+    '"time_connect": %{time_connect},' .
+    '"time_appconnect": %{time_appconnect},' .
+    '"time_pretransfer": %{time_pretransfer},' .
+    '"time_redirect": %{time_redirect},' .
+    '"time_starttransfer": %{time_starttransfer},' .
+    '"time_total": %{time_total},' .
+    '"speed_download": %{speed_download},' .
+    '"speed_upload": %{speed_upload}' .
     '}';
 
 
@@ -68,7 +68,8 @@ $httpTemplate = "  DNS Lookup   TCP Connection   Server Processing   Content Tra
 ";
 
 
-$ISATTY = function_exists('posix_isatty') ? posix_isatty(STDOUT) : true;
+$ISATTY = posix_isatty(STDOUT);
+
 
 function makeColor($code)
 {
@@ -140,7 +141,7 @@ Options:
                 which are already used internally.
   -h --help     show this screen.
   --version     show version.
-
+  
 Environments:
   HTTPSTAT_SHOW_BODY    Set to `true` to show resposne body in the output,
                         note that body length is limited to 1023 bytes, will be
@@ -236,20 +237,14 @@ function main()
     fclose($headerF);
 
     // run cmd
-    if (strcasecmp(substr(PHP_OS, 0, 3), 'WIN') != 0) {
-        // unix like systems
-        $cmdEnv = $_ENV;
-        $cmdEnv['LC_ALL'] = 'C';
-    }
-    else
-        // windows
-        $cmdEnv = null;
+    $cmdEnv = $_ENV;
+    $cmdEnv['LC_ALL'] = 'C';
 
     $cmdArr = array(
         $curlBin,
-        '-w', "\"{$curlFormat}\"",
-        '-D', "\"{$headerFName}\"",
-        '-o', "\"{$bodyFName}\"",
+        '-w', "'{$curlFormat}'",
+        '-D', "'{$headerFName}'",
+        '-o', "'{$bodyFName}'",
         '-s', '-S'
     );
 
@@ -262,16 +257,13 @@ function main()
 
     $p = proc_open($cmd,
         array(
-            0 => array("pipe", "r"),
-            1 => array("pipe", "w"),
-            2 => array("pipe", "w")
+            array("pipe", "r"),
+            array("pipe", "w"),
+            array("pipe", "w")
         ),
         $pipes,
         sys_get_temp_dir(),
-        null,//$cmdEnv,
-        [
-            //'bypass_shell' => true,
-    ]);
+        $cmdEnv);
 
     $out = stream_get_contents($pipes[1]);
     $err = stream_get_contents($pipes[2]);
