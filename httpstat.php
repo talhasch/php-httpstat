@@ -36,15 +36,15 @@ $ENV_DEBUG = new Env('{prefix}_DEBUG');
 
 
 $curlFormat = '{' .
-    '\"time_namelookup\": %{time_namelookup},' .
-    '\"time_connect\": %{time_connect},' .
-    '\"time_appconnect\": %{time_appconnect},' .
-    '\"time_pretransfer\": %{time_pretransfer},' .
-    '\"time_redirect\": %{time_redirect},' .
-    '\"time_starttransfer\": %{time_starttransfer},' .
-    '\"time_total\": %{time_total},' .
-    '\"speed_download\": %{speed_download},' .
-    '\"speed_upload\": %{speed_upload}' .
+    '"time_namelookup": %{time_namelookup},' .
+    '"time_connect": %{time_connect},' .
+    '"time_appconnect": %{time_appconnect},' .
+    '"time_pretransfer": %{time_pretransfer},' .
+    '"time_redirect": %{time_redirect},' .
+    '"time_starttransfer": %{time_starttransfer},' .
+    '"time_total": %{time_total},' .
+    '"speed_download": %{speed_download},' .
+    '"speed_upload": %{speed_upload}' .
     '}';
 
 
@@ -240,16 +240,19 @@ function main()
         // unix like systems
         $cmdEnv = $_ENV;
         $cmdEnv['LC_ALL'] = 'C';
+        $quote = '\'';
     }
-    else
+    else {
         // windows
         $cmdEnv = null;
+        $quote  = '"';
+    }
 
     $cmdArr = array(
         $curlBin,
-        '-w', "\"{$curlFormat}\"",
-        '-D', "\"{$headerFName}\"",
-        '-o', "\"{$bodyFName}\"",
+        '-w', "{$quote}{$curlFormat}{$quote}",
+        '-D', "{$quote}{$headerFName}{$quote}",
+        '-o', "{$quote}{$bodyFName}{$quote}",
         '-s', '-S'
     );
 
