@@ -246,6 +246,8 @@ function main()
         // windows
         $cmdEnv = null;
         $quote  = '"';
+
+        $curlFormat = str_replace($quote, '\"', $curlFormat);
     }
 
     $cmdArr = array(
