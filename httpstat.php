@@ -268,10 +268,9 @@ function main()
         ),
         $pipes,
         sys_get_temp_dir(),
-        null,//$cmdEnv,
-        [
-            //'bypass_shell' => true,
-    ]);
+        $cmdEnv,
+        array()
+    );
 
     $out = stream_get_contents($pipes[1]);
     $err = stream_get_contents($pipes[2]);
