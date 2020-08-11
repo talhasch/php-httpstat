@@ -265,15 +265,13 @@ function main()
 
     $p = proc_open($cmd,
         array(
-            0 => array("pipe", "r"),
-            1 => array("pipe", "w"),
-            2 => array("pipe", "w")
+            array("pipe", "r"),
+            array("pipe", "w"),
+            array("pipe", "w")
         ),
         $pipes,
         sys_get_temp_dir(),
-        $cmdEnv,
-        array()
-    );
+        $cmdEnv);
 
     $out = stream_get_contents($pipes[1]);
     $err = stream_get_contents($pipes[2]);
