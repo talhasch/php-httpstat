@@ -68,8 +68,7 @@ $httpTemplate = "  DNS Lookup   TCP Connection   Server Processing   Content Tra
 ";
 
 
-$ISATTY = posix_isatty(STDOUT);
-
+$ISATTY = function_exists('posix_isatty') ? posix_isatty(STDOUT) : true;
 
 function makeColor($code)
 {
@@ -141,7 +140,7 @@ Options:
                 which are already used internally.
   -h --help     show this screen.
   --version     show version.
-  
+
 Environments:
   HTTPSTAT_SHOW_BODY    Set to `true` to show resposne body in the output,
                         note that body length is limited to 1023 bytes, will be
@@ -237,14 +236,25 @@ function main()
     fclose($headerF);
 
     // run cmd
-    $cmdEnv = $_ENV;
-    $cmdEnv['LC_ALL'] = 'C';
+    if (strcasecmp(substr(PHP_OS, 0, 3), 'WIN') != 0) {
+        // unix like systems
+        $cmdEnv = $_ENV;
+        $cmdEnv['LC_ALL'] = 'C';
+        $quote = '\'';
+    }
+    else {
+        // windows
+        $cmdEnv = null;
+        $quote  = '"';
+
+        $curlFormat = str_replace($quote, '\"', $curlFormat);
+    }
 
     $cmdArr = array(
         $curlBin,
-        '-w', "'{$curlFormat}'",
-        '-D', "'{$headerFName}'",
-        '-o', "'{$bodyFName}'",
+        '-w', "{$quote}{$curlFormat}{$quote}",
+        '-D', "{$quote}{$headerFName}{$quote}",
+        '-o', "{$quote}{$bodyFName}{$quote}",
         '-s', '-S'
     );
 
